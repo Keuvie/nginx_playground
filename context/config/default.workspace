@@ -1,0 +1,70 @@
+{
+  "folders": [
+    {
+      "path": "/var/log/nginx"
+    },
+    {
+      "path": "/etc/nginx/vhosts"
+    },
+    {
+      "path": "/docs"
+    },
+    {
+      "path": "/tests"
+    }
+  ],
+  "remoteAuthority": "localhost:8443",
+  "settings": {
+    "workbench.colorTheme": "Visual Studio Dark",
+    "files.associations": {
+      "*.conf": "nginx",
+      "current_config": "nginx"
+    },
+    "editor.autoClosingDelete": "never",
+    "logViewer.watch": [
+      {
+        "groupName": "Nginx",
+        "watches": [
+          {
+            "title": "Access",
+            "pattern": "/var/log/nginx/access.log"
+          },
+          {
+            "title": "Error",
+            "pattern": "/var/log/nginx/error.log"
+          }
+        ]
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Reload nginx",
+        "type": "shell",
+        "command": "sudo nginx -s reload"
+      },
+      {
+        "label": "Reopen nginx",
+        "type": "shell",
+        "command": "sudo nginx -s reopen"
+      },
+      {
+        "label": "Quit nginx",
+        "type": "shell",
+        "command": "sudo nginx -s quit"
+      },
+      {
+        "label": "Configtest",
+        "type": "shell",
+        "command": "sudo nginx -t"
+      },
+      {
+        "label": "Configtest (Verbose)",
+        "type": "shell",
+        "command": "sudo nginx -T"
+      }
+    ]
+  }
+}

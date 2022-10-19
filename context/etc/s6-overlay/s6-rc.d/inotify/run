@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+DIR_VHOSTS=/etc/nginx/vhosts
+
+nginx_configtest() {
+    nginx -t > /dev/null 2>&1
+}
+
+nginx_reload() {
+    nginx  -s reload > /dev/null 2>&1
+}
+
+run_tests() {
+    for f in /tests/*.csv; do
+        while read -r line; do
+            IFS=';' read -r source target <<< "${line}"
+            source_url="http://127.0.0.1${source}"
+            target_url="http://127.0.0.1${target}"
+            response_url=$(curl --resolve '*:80:127.0.0.1' --resolve '*:443:127.0.0.1' -sko /dev/null -ILw '%{url_effective}' ${source_url})
+            { [[ ${response_url} != ${target_url} ]] && echo "ERROR:   ${source_url}->${response_url}" || echo "SUCCESS: ${source_url}->${response_url}"; }
+        done < <( tail -n +2 ${f}) > ${f}.output
+    done 
+}
+
+file_watch() {
+    inotifywait --recursive -e close_write ${DIR_VHOSTS} > /var/log/inotify 2>&1
+}
+
+while file_watch; do
+    if nginx_configtest; then
+        nginx_reload
+        run_tests
+    fi
+done

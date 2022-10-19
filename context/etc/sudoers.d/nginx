@@ -1,0 +1,1 @@
+abc ALL=(ALL) NOPASSWD: /usr/sbin/nginx -s reload,/usr/sbin/nginx -s stop,/usr/sbin/nginx -s quit,/usr/sbin/nginx -s reopen,/usr/sbin/nginx -t,/usr/sbin/nginx -T
